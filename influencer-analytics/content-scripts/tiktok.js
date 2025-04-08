@@ -56,6 +56,12 @@ function extractTikTokData() {
     }, response => {
       debugLog('Storage response:', response);
     });
+    
+    // Notify that we have data to ensure the panel opens
+    chrome.runtime.sendMessage({
+      action: "dataCollected",
+      platform: "tiktok"
+    });
   }
 }
 
@@ -75,6 +81,12 @@ function parseViewCount(text) {
     return 0;
   }
 }
+
+// Signal to background script that this is a TikTok page
+chrome.runtime.sendMessage({
+  action: "pageDetected",
+  platform: "tiktok"
+});
 
 // Scroll event listener
 document.addEventListener('scroll', function() {

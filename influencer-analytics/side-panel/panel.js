@@ -25,13 +25,38 @@ function median(numbers) {
   return sorted[middle];
 }
 
+function updatePlatformBadge(platform) {
+  const platformName = document.getElementById('platform-name');
+  const platformBadge = document.getElementById('platform-badge');
+  
+  if (platform === 'tiktok') {
+    platformName.textContent = 'TikTok';
+    platformBadge.textContent = 'TikTok';
+    platformBadge.className = 'platform-badge platform-tiktok';
+  } else if (platform === 'instagram') {
+    platformName.textContent = 'Instagram';
+    platformBadge.textContent = 'Instagram';
+    platformBadge.className = 'platform-badge platform-instagram';
+  } else {
+    platformName.textContent = 'this page';
+    platformBadge.style.display = 'none';
+  }
+}
+
 function updateStats(data, platform) {
+  // Update platform badge
+  updatePlatformBadge(platform);
+  
   if (!data || data.length === 0) {
-    // Set all values to '-'
-    const elements = document.querySelectorAll('.stat-value');
-    elements.forEach(el => el.textContent = '-');
+    // Hide stats container, show loading message
+    document.getElementById('stats-container').style.display = 'none';
+    document.getElementById('loading-message').style.display = 'block';
     return;
   }
+
+  // Show stats container, hide loading message
+  document.getElementById('stats-container').style.display = 'block';
+  document.getElementById('loading-message').style.display = 'none';
 
   // Get all view counts as an array
   const viewCounts = data.map(item => item.views);
@@ -75,14 +100,25 @@ function updateStats(data, platform) {
 
 // Initial load
 chrome.storage.local.get(['videoData', 'platform'], function(result) {
-  if (result.videoData) {
+  if (result.videoData && result.videoData.length > 0) {
     updateStats(result.videoData, result.platform);
+  } else {
+    // Show initial loading state
+    document.getElementById('stats-container').style.display = 'none';
+    document.getElementById('loading-message').style.display = 'block';
   }
 });
 
 // Listen for storage changes
 chrome.storage.onChanged.addListener(function(changes, namespace) {
-  if (namespace === 'local' && changes.videoData) {
-    updateStats(changes.videoData.newValue, changes.platform?.newValue);
+  if (namespace === 'local') {
+    const newData = changes.videoData?.newValue || null;
+    const newPlatform = changes.platform?.newValue || null;
+    
+    if (newData || newPlatform) {
+      chrome.storage.local.get(['videoData', 'platform'], function(result) {
+        updateStats(result.videoData, result.platform);
+      });
+    }
   }
-}); 
+});

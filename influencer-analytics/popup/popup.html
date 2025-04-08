@@ -4,6 +4,37 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="popup.css">
+    <style>
+        .action-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .action-button:hover {
+            background-color: #45a049;
+        }
+        
+        .status-message {
+            background-color: #333;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: center;
+            color: #aaa;
+            font-style: italic;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,85 +44,93 @@
                 <span class="logo-icon">+</span>
                 <div class="logo-text">
                     <h1>Profile+</h1>
-                    <p class="subtitle">by yourextension.com</p>
+                    <p class="subtitle">Analytics for Creators</p>
                 </div>
             </div>
         </div>
 
-        <div class="stats-card">
-            <h2 id="videos-analyzed">0</h2>
-            <p>Videos Analyzed (scroll for more)</p>
+        <div id="not-supported-message" class="status-message" style="display: none;">
+            This extension is designed for TikTok and Instagram Reels pages.
         </div>
 
-        <h3>Last 15 Videos</h3>
+        <div id="supported-content">
+            <button id="open-panel-button" class="action-button">Open Analytics Panel</button>
 
-        <div class="stats-row">
-            <div class="stat-box">
-                <h2 id="mean-views">0</h2>
-                <p>Mean Views</p>
+            <div class="stats-card">
+                <h2 id="videos-analyzed">0</h2>
+                <p>Videos Analyzed (scroll for more)</p>
             </div>
-            <div class="stat-box">
-                <h2 id="median-views">0</h2>
-                <p>Median Views</p>
+
+            <h3>Last 15 Videos</h3>
+
+            <div class="stats-row">
+                <div class="stat-box">
+                    <h2 id="mean-views">0</h2>
+                    <p>Mean Views</p>
+                </div>
+                <div class="stat-box">
+                    <h2 id="median-views">0</h2>
+                    <p>Median Views</p>
+                </div>
             </div>
-        </div>
 
-        <h3>Virality Statistics</h3>
+            <h3>Virality Statistics</h3>
 
-        <div class="stats-card">
-            <h2 id="most-viewed">0</h2>
-            <p>Most Viewed Video</p>
-        </div>
-
-        <h3>Viral Videos 10x+ Median</h3>
-
-        <div class="stats-row">
-            <div class="stat-box">
-                <h2 id="viral-mean">0</h2>
-                <p>Mean Views</p>
+            <div class="stats-card">
+                <h2 id="most-viewed">0</h2>
+                <p>Most Viewed Video</p>
             </div>
-            <div class="stat-box">
-                <h2 id="viral-median">0</h2>
-                <p>Median Views</p>
-            </div>
-        </div>
 
-        <h3>Videos Outperforming By 10x+ Median</h3>
+            <h3>Viral Videos 10x+ Median</h3>
 
-        <div class="stats-row">
-            <div class="stat-box">
-                <h2 id="outperf-10x-count">0</h2>
-                <p>Videos</p>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <h2 id="viral-mean">0</h2>
+                    <p>Mean Views</p>
+                </div>
+                <div class="stat-box">
+                    <h2 id="viral-median">0</h2>
+                    <p>Median Views</p>
+                </div>
             </div>
-            <div class="stat-box">
-                <h2 id="outperf-10x-odds">0%</h2>
-                <p>Outperf. Odds</p>
-            </div>
-        </div>
 
-        <h3>Videos Outperforming By 5x+ Median</h3>
+            <h3>Videos Outperforming By 10x+ Median</h3>
 
-        <div class="stats-row">
-            <div class="stat-box">
-                <h2 id="outperf-5x-count">0</h2>
-                <p>Videos</p>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <h2 id="outperf-10x-count">0</h2>
+                    <p>Videos</p>
+                </div>
+                <div class="stat-box">
+                    <h2 id="outperf-10x-odds">0%</h2>
+                    <p>Outperf. Odds</p>
+                </div>
             </div>
-            <div class="stat-box">
-                <h2 id="outperf-5x-odds">0%</h2>
-                <p>Outperf. Odds</p>
-            </div>
-        </div>
 
-        <h3>All Videos</h3>
+            <h3>Videos Outperforming By 5x+ Median</h3>
 
-        <div class="stats-row">
-            <div class="stat-box">
-                <h2 id="all-mean">0</h2>
-                <p>Mean Views</p>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <h2 id="outperf-5x-count">0</h2>
+                    <p>Videos</p>
+                </div>
+                <div class="stat-box">
+                    <h2 id="outperf-5x-odds">0%</h2>
+                    <p>Outperf. Odds</p>
+                </div>
             </div>
-            <div class="stat-box">
-                <h2 id="all-median">0</h2>
-                <p>Median Views</p>
+
+            <h3>All Videos</h3>
+
+            <div class="stats-row">
+                <div class="stat-box">
+                    <h2 id="all-mean">0</h2>
+                    <p>Mean Views</p>
+                </div>
+                <div class="stat-box">
+                    <h2 id="all-median">0</h2>
+                    <p>Median Views</p>
+                </div>
             </div>
         </div>
     </div>

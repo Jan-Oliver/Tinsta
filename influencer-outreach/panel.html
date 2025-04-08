@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Email Sender</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Email Generator</h2>
+    
+    <div class="form-group">
+      <label for="language">Language:</label>
+      <select id="language">
+        <option value="en">English</option>
+        <option value="de">Deutsch</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="name" data-en="Name:" data-de="Name:">Name:</label>
+      <input type="text" id="name" placeholder="Recipient's name">
+    </div>
+    
+    <div class="form-group">
+      <label for="email" data-en="Email:" data-de="E-Mail:">Email:</label>
+      <input type="email" id="email" placeholder="Recipient's email">
+    </div>
+    
+    <div class="buttons">
+      <button id="notifyCreator" class="btn" data-en="Notify Creator" data-de="Creator benachrichtigen">Notify Creator</button>
+      <button id="notifyInfluencer" class="btn" data-en="Notify Influencer" data-de="Influencer benachrichtigen">Notify Influencer</button>
+    </div>
+    
+    <div id="status" class="status"></div>
+  </div>
+
+  <script src="panel.js"></script>
+</body>
+</html>

@@ -27,6 +27,18 @@
       width: 32px;
       height: 32px;
       margin-right: 12px;
+      position: relative;
+    }
+    
+    .active-indicator {
+      width: 10px;
+      height: 10px;
+      background-color: #4CAF50;
+      border-radius: 50%;
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      border: 2px solid #1a1a1a;
     }
 
     .title {
@@ -80,98 +92,160 @@
       color: #666;
       font-style: italic;
     }
+    
+    .loading-message {
+      text-align: center;
+      padding: 16px;
+      color: #888;
+      font-style: italic;
+    }
+    
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: #4CAF50;
+    }
+    
+    .status-indicator .dot {
+      width: 8px;
+      height: 8px;
+      background-color: #4CAF50;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    
+    .platform-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+    
+    .platform-tiktok {
+      background-color: #000000;
+      color: #ff0050;
+    }
+    
+    .platform-instagram {
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: white;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <img src="../icons/icon48.png" alt="Profile+" class="logo">
+      <div class="logo">
+        <img src="../icons/icon48.png" alt="Profile+" width="32" height="32">
+        <div class="active-indicator"></div>
+      </div>
       <div>
         <h1 class="title">Profile+</h1>
-        <p class="subtitle">by findmecreators.com</p>
+        <p class="subtitle">Analytics for creators</p>
       </div>
     </div>
-
-    <div class="stat-section">
-      <p class="section-title">Videos Analyzed</p>
-      <div class="stat-box">
-        <p class="stat-value" id="videos-analyzed">-</p>
-        <p class="stat-label">scroll for more</p>
-      </div>
+    
+    <div class="status-indicator">
+      <div class="dot"></div>
+      <span>Actively monitoring <span id="platform-name">this page</span></span>
+      <span id="platform-badge" class="platform-badge"></span>
     </div>
 
-    <div class="stat-section">
-      <p class="section-title">Last 15 Videos</p>
-      <div class="stat-grid">
-        <div class="stat-box">
-          <p class="stat-value" id="mean-views">-</p>
-          <p class="stat-label">Mean Views</p>
-        </div>
-        <div class="stat-box">
-          <p class="stat-value" id="median-views">-</p>
-          <p class="stat-label">Median Views</p>
-        </div>
-      </div>
+    <div id="loading-message" class="loading-message">
+      Scroll through the profile to collect video data...
+      <button id="manual-extract-button" style="margin-top: 15px; padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        Extract Data Now
+      </button>
     </div>
 
-    <div class="stat-section">
-      <p class="section-title">Virality Statistics</p>
-      <div class="stat-box" style="margin-bottom: 16px;">
-        <p class="stat-value" id="most-viewed">-</p>
-        <p class="stat-label">Most Viewed Video</p>
-      </div>
-      
-      <p class="section-title">Viral Videos 10x+ Median</p>
-      <div class="stat-grid">
+    <div id="stats-container" style="display: none;">
+      <div class="stat-section">
+        <p class="section-title">Videos Analyzed</p>
         <div class="stat-box">
-          <p class="stat-value" id="viral-mean">-</p>
-          <p class="stat-label">Mean Views</p>
-        </div>
-        <div class="stat-box">
-          <p class="stat-value" id="viral-median">-</p>
-          <p class="stat-label">Median Views</p>
+          <p class="stat-value" id="videos-analyzed">-</p>
+          <p class="stat-label">scroll for more</p>
         </div>
       </div>
-    </div>
-
-    <div class="stat-section">
-      <p class="section-title">Videos Outperforming</p>
-      <div class="stat-grid">
-        <div class="stat-box">
-          <p class="stat-value" id="outperf-10x-count">-</p>
-          <p class="stat-label">10x+ Videos</p>
-        </div>
-        <div class="stat-box">
-          <p class="stat-value" id="outperf-10x-odds">-</p>
-          <p class="stat-label">10x+ Odds</p>
-        </div>
-      </div>
-      <div class="stat-grid" style="margin-top: 12px;">
-        <div class="stat-box">
-          <p class="stat-value" id="outperf-5x-count">-</p>
-          <p class="stat-label">5x+ Videos</p>
-        </div>
-        <div class="stat-box">
-          <p class="stat-value" id="outperf-5x-odds">-</p>
-          <p class="stat-label">5x+ Odds</p>
+  
+      <div class="stat-section">
+        <p class="section-title">Last 15 Videos</p>
+        <div class="stat-grid">
+          <div class="stat-box">
+            <p class="stat-value" id="mean-views">-</p>
+            <p class="stat-label">Mean Views</p>
+          </div>
+          <div class="stat-box">
+            <p class="stat-value" id="median-views">-</p>
+            <p class="stat-label">Median Views</p>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="stat-section">
-      <p class="section-title">All Videos</p>
-      <div class="stat-grid">
-        <div class="stat-box">
-          <p class="stat-value" id="all-mean">-</p>
-          <p class="stat-label">Mean Views</p>
+  
+      <div class="stat-section">
+        <p class="section-title">Virality Statistics</p>
+        <div class="stat-box" style="margin-bottom: 16px;">
+          <p class="stat-value" id="most-viewed">-</p>
+          <p class="stat-label">Most Viewed Video</p>
         </div>
-        <div class="stat-box">
-          <p class="stat-value" id="all-median">-</p>
-          <p class="stat-label">Median Views</p>
+        
+        <p class="section-title">Viral Videos 10x+ Median</p>
+        <div class="stat-grid">
+          <div class="stat-box">
+            <p class="stat-value" id="viral-mean">-</p>
+            <p class="stat-label">Mean Views</p>
+          </div>
+          <div class="stat-box">
+            <p class="stat-value" id="viral-median">-</p>
+            <p class="stat-label">Median Views</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="stat-section">
+        <p class="section-title">Videos Outperforming</p>
+        <div class="stat-grid">
+          <div class="stat-box">
+            <p class="stat-value" id="outperf-10x-count">-</p>
+            <p class="stat-label">10x+ Videos</p>
+          </div>
+          <div class="stat-box">
+            <p class="stat-value" id="outperf-10x-odds">-</p>
+            <p class="stat-label">10x+ Odds</p>
+          </div>
+        </div>
+        <div class="stat-grid" style="margin-top: 12px;">
+          <div class="stat-box">
+            <p class="stat-value" id="outperf-5x-count">-</p>
+            <p class="stat-label">5x+ Videos</p>
+          </div>
+          <div class="stat-box">
+            <p class="stat-value" id="outperf-5x-odds">-</p>
+            <p class="stat-label">5x+ Odds</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="stat-section">
+        <p class="section-title">All Videos</p>
+        <div class="stat-grid">
+          <div class="stat-box">
+            <p class="stat-value" id="all-mean">-</p>
+            <p class="stat-label">Mean Views</p>
+          </div>
+          <div class="stat-box">
+            <p class="stat-value" id="all-median">-</p>
+            <p class="stat-label">Median Views</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <script src="panel.js"></script>
 </body>
-</html> 
+</html>
